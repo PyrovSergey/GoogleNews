@@ -1,4 +1,4 @@
-package com.test.googlenews;
+package com.test.googlenews.Model;
 
 import com.test.googlenews.Model.News;
 
@@ -15,4 +15,6 @@ import retrofit2.http.Query;
 public interface GoogleApi {
     @GET("/v2/top-headlines")
     Call<News> getData(@Query("sources") String resourceName, @Query("apiKey") String key);
+    @GET ("/v2/everything")
+    Call<News> getRequest(@Query("q") String resourceName, @Query("apiKey") String key);
 }

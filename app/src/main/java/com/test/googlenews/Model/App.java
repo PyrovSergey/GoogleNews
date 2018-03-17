@@ -2,8 +2,6 @@ package com.test.googlenews.Model;
 
 import android.app.Application;
 
-import com.test.googlenews.GoogleApi;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -29,4 +27,5 @@ public class App extends Application {
     public static GoogleApi getGoogleApi() {
         return googleApi;
     }
+
 }

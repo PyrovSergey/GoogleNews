@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setAdapter(newsAdapter);
 
         getNews();
+        //getRequest();
     }
 
     private void getNews() {
@@ -71,7 +72,27 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         itemList.clear();
-        getNews();
+        //getNews();
+        getRequest();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void getRequest() {
+        App.getGoogleApi().getRequest("trump", "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<News>() {
+
+            @Override
+            public void onResponse(Call<News> call, Response<News> response) {
+                if (response.body() != null) {
+                    newsAdapter.setData(response.body().getArticles());
+                }
+                Log.e("MyTAG", "onResponse()");
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "An error occurred during networking", Toast.LENGTH_SHORT).show();
+                Log.e("MyTAG", "onFailure()");
+            }
+        });
     }
 }

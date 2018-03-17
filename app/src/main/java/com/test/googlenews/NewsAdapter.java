@@ -2,6 +2,7 @@ package com.test.googlenews;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,16 +47,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ArticlesItem currentItem = itemList.get(position);
-        if (currentItem.getUrlToImage() != null & !currentItem.getUrlToImage().equals("")) {
+        try{
             Picasso.with(context).load(currentItem.getUrlToImage()).placeholder(R.drawable.gn_holder).into(holder.imageView);
-        } else {
+        } catch (NullPointerException e){
             Picasso.with(context).load(R.drawable.gn_holder).into(holder.imageView);
         }
         holder.textViewTitle.setText(String.valueOf(currentItem.getTitle()));
         holder.textViewDescription.setText(String.valueOf(currentItem.getDescription()));
-        String data = getCurrentDate(currentItem.getPublishedAt());
-        ////
-        holder.textViewPublishedAt.setText(data);
+        holder.textViewPublishedAt.setText(String.valueOf(currentItem.getPublishedAt()));
     }
 
     @Override
