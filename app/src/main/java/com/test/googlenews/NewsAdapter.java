@@ -1,10 +1,7 @@
 package com.test.googlenews;
 
 import android.content.Context;
-import android.media.Image;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +11,12 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.test.googlenews.Model.ArticlesItem;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by pyrov on 16.03.2018.
@@ -52,7 +53,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
         holder.textViewTitle.setText(String.valueOf(currentItem.getTitle()));
         holder.textViewDescription.setText(String.valueOf(currentItem.getDescription()));
-        holder.textViewPublishedAt.setText(String.valueOf(currentItem.getPublishedAt()));
+        String data = getCurrentDate(currentItem.getPublishedAt());
+        ////
+        holder.textViewPublishedAt.setText(data);
     }
 
     @Override
@@ -66,6 +69,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         TextView textViewTitle;
         TextView textViewDescription;
         TextView textViewPublishedAt;
+
         public ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
@@ -74,5 +78,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             textViewDescription = (TextView) view.findViewById(R.id.description);
             textViewPublishedAt = (TextView) view.findViewById(R.id.publishedAt);
         }
+    }
+
+    private String getCurrentDate(String string) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try {
+            date = format.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(date);
     }
 }
