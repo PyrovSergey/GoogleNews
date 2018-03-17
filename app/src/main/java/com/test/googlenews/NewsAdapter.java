@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.test.googlenews.Model.ArticlesItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,22 +24,26 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private Context context;
-    private List<ArticlesItem> itemList;
+    private List<ArticlesItem> itemList = new ArrayList<>();
 
     public NewsAdapter(Context context, List<ArticlesItem> itemList) {
         this.context = context;
         this.itemList = itemList;
     }
 
-    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.news_card, parent, false);
         return new ViewHolder(view);
     }
 
+    public void setData(List<ArticlesItem> list) {
+        itemList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         ArticlesItem currentItem = itemList.get(position);
         if (currentItem.getUrlToImage() != null & !currentItem.getUrlToImage().equals("")) {
             Picasso.with(context).load(currentItem.getUrlToImage()).placeholder(R.drawable.gn_holder).into(holder.imageView);

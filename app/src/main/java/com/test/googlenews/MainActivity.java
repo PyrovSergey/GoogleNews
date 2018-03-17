@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private List<ArticlesItem> itemList;
     private LinearLayoutManager linearLayoutManager;
     private NewsAdapter newsAdapter;
-    private News news;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +43,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(newsAdapter);
 
         App.getGoogleApi().getData("google-news-ru", "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<News>() {
+
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
-                news = response.body();
-                itemList = news.getArticles();
-                recyclerView.getAdapter().notifyDataSetChanged();
-                Log.e("MyTAG", String.valueOf(itemList.size()));
+               if (response.body() != null) {
+                   newsAdapter.setData(response.body().getArticles());
+               }
             }
 
             @Override

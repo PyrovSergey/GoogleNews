@@ -20,7 +20,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_margin="5dp"
             tools:text="A very long title for the article."/>
 
@@ -33,13 +33,13 @@
                 android:id="@+id/image_news"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:layout_margin="5dp"
                 android:src="@drawable/gn_holder" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="5dp"
                 tools:text="Description of the article and its full content in this field."/>
 
         </LinearLayout>
