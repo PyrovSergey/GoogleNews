@@ -14,5 +14,5 @@ import retrofit2.http.Query;
 
 public interface GoogleApi {
     @GET("/v2/top-headlines")
-    Call<List<News>> getData(@Query("sources") String resourceName, @Query("apiKey") String key);
+    Call<News> getData(@Query("sources") String resourceName, @Query("apiKey") String key);
 }

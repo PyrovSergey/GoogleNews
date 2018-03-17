@@ -20,15 +20,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<ArticlesItem> itemList;
-    List<News> newsList;
     private LinearLayoutManager linearLayoutManager;
     private NewsAdapter newsAdapter;
     private News news;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,38 +34,29 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        swipeRefreshLayout.setRefreshing(true);
-
-        newsList = new ArrayList<>();
         itemList = new ArrayList<>();
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-
         newsAdapter = new NewsAdapter(this, itemList);
         recyclerView.setAdapter(newsAdapter);
 
-        App.getGoogleApi().getData("google-news-ru", "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<List<News>>() {
+        App.getGoogleApi().getData("google-news-ru", "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<News>() {
             @Override
-            public void onResponse(Call<List<News>> call, Response<List<News>> response) {
-                newsList.addAll(response.body());
+            public void onResponse(Call<News> call, Response<News> response) {
+                news = response.body();
+                itemList = news.getArticles();
                 recyclerView.getAdapter().notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+                Log.e("MyTAG", String.valueOf(itemList.size()));
             }
 
             @Override
-            public void onFailure(Call<List<News>> call, Throwable t) {
+            public void onFailure(Call<News> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "An error occurred during networking", Toast.LENGTH_SHORT).show();
                 Log.e("MyTAG", String.valueOf(t));
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
-    }
-
-    @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
     }
 }
