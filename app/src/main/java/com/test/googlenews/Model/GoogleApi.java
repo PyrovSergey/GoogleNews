@@ -1,9 +1,5 @@
 package com.test.googlenews.Model;
 
-import com.test.googlenews.Model.News;
-
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -14,7 +10,8 @@ import retrofit2.http.Query;
 
 public interface GoogleApi {
     @GET("/v2/top-headlines")
-    Call<News> getData(@Query("sources") String resourceName, @Query("apiKey") String key);
-    @GET ("/v2/everything")
-    Call<News> getRequest(@Query("q") String resourceName, @Query("apiKey") String key);
+    Call<News> getData(@Query("country") String resourceName, @Query("apiKey") String key);
+
+    @GET("/v2/everything")
+    Call<News> getRequest(@Query("q") String resourceName, @Query("sortBy") String sortBy, @Query("pageSize") int pageSize,@Query("apiKey") String key);
 }

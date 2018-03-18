@@ -1,20 +1,27 @@
 package com.test.googlenews;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.test.googlenews.Model.ArticlesItem;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,15 +53,31 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ArticlesItem currentItem = itemList.get(position);
-        try{
-            Picasso.with(context).load(currentItem.getUrlToImage()).placeholder(R.drawable.gn_holder).into(holder.imageView);
-        } catch (NullPointerException e){
+        final ArticlesItem currentItem = itemList.get(position);
+        try {
+            if (!TextUtils.isEmpty(currentItem.getUrlToImage())) {
+                Picasso.with(context).load(currentItem.getUrlToImage()).placeholder(R.drawable.gn_holder).into(holder.imageView);
+            } else {
+                Picasso.with(context).load(R.drawable.gn_holder).into(holder.imageView);
+            }
+        } catch (NullPointerException e) {
             Picasso.with(context).load(R.drawable.gn_holder).into(holder.imageView);
         }
         holder.textViewTitle.setText(String.valueOf(currentItem.getTitle()));
-        holder.textViewDescription.setText(String.valueOf(currentItem.getDescription()));
-        holder.textViewPublishedAt.setText(String.valueOf(currentItem.getPublishedAt()));
+        String description = String.valueOf(currentItem.getDescription());
+        if (description.equals("null")) {
+            description = "";
+        }
+        holder.textViewDescription.setText(description);
+        getDate(currentItem.getPublishedAt());
+        holder.textViewPublishedAt.setText(getDate(currentItem.getPublishedAt()));
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(currentItem.getUrl())));
+            }
+        });
     }
 
     @Override
@@ -64,6 +87,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         View view;
+        CardView cardView;
         ImageView imageView;
         TextView textViewTitle;
         TextView textViewDescription;
@@ -72,6 +96,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
+            cardView = (CardView) view.findViewById(R.id.card_view);
             imageView = (ImageView) view.findViewById(R.id.image_news);
             textViewTitle = (TextView) view.findViewById(R.id.title);
             textViewDescription = (TextView) view.findViewById(R.id.description);
@@ -79,14 +104,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
     }
 
-    private String getCurrentDate(String string) {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = null;
-        try {
-            date = format.parse(string);
-        } catch (ParseException e) {
-            e.printStackTrace();
+    private String getDate(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return "";
         }
-        return String.valueOf(date);
+        String year = string.substring(0, 4);
+        String month = string.substring(5, 7);
+        String date = string.substring(8, 10);
+        String hour = string.substring(11, 13);
+        String minute = string.substring(14, 16);
+        //Log.e("MyDATA", year + "|" + month + "|" + date + "|" + hour + ":" + minute);
+        return hour + ":" + minute + "  " + date + "." + month + "." + year;
     }
 }
