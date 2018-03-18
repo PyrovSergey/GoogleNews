@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/card_view"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
@@ -22,14 +22,16 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_margin="5dp"
-            tools:text="A very long title for the article."/>
+            android:textSize="16sp"
+            tools:text="A very long title for the article." />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp">
 
             <ImageView
                 android:id="@+id/image_news"
@@ -41,9 +43,9 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp"
                 android:maxLines="6"
-                tools:text="Description of the article and its full content in this field."/>
+                android:padding="10dp"
+                tools:text="Description of the article and its full content in this field." />
 
         </LinearLayout>
 
@@ -53,7 +55,7 @@
             android:layout_height="match_parent"
             android:gravity="right"
             android:padding="3dp"
-            tools:text="publishedAt"/>
+            tools:text="publishedAt" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

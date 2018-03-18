@@ -4,22 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     android:orientation="vertical"
-    android:background="#E0E0E0"
     tools:context="com.test.googlenews.MainActivity">
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background">
+        android:background="#F5F5F5">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -30,18 +23,27 @@
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                android:background="@color/cardview_light_background">
 
             </android.support.v7.widget.SearchView>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

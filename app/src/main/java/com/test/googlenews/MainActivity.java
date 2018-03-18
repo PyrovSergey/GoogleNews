@@ -1,7 +1,5 @@
 package com.test.googlenews;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -77,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         newsAdapter = new NewsAdapter(this, itemList);
         recyclerView.setAdapter(newsAdapter);
+        searchView.setIconifiedByDefault(true);
 
         getNews();
     }
@@ -85,16 +84,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onResume() {
         super.onResume();
         searchView.setIconifiedByDefault(true);
+        searchView.destroyDrawingCache();
     }
 
     private void getNews() {
         //Log.e("MyTAG", "getNews()");
-        itemList.clear();
         App.getGoogleApi().getData("ru", "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<News>() {
 
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
                 if (response.body() != null) {
+                    itemList.clear();
                     newsAdapter.setData(response.body().getArticles());
                 }
                 //Log.e("MyTAG", "onResponse()");
@@ -110,18 +110,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        itemList.clear();
         getNews();
         swipeRefreshLayout.setRefreshing(false);
     }
 
     private void getRequest(String string) {
         searchView.setIconifiedByDefault(false);
-        itemList.clear();
         App.getGoogleApi().getRequest(string, "publishedAt", 100, "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
                 if (response.body() != null) {
+                    itemList.clear();
                     newsAdapter.setData(response.body().getArticles());
                 }
                 //Log.e("MyTAG", "onResponse()");

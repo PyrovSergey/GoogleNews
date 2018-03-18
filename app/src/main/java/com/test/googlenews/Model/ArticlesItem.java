@@ -3,10 +3,12 @@ package com.test.googlenews.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class ArticlesItem {
 
     @SerializedName("publishedAt")
-    private String publishedAt;
+    private Date publishedAt;
 
     @SerializedName("author")
     private Object author;
@@ -26,12 +28,12 @@ public class ArticlesItem {
     @SerializedName("url")
     private String url;
 
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
+    public Date getPublishedAt() {
+        return publishedAt;
     }
 
-    public String getPublishedAt() {
-        return publishedAt;
+    public void setPublishedAt(Date publishedAt) {
+        this.publishedAt = publishedAt;
     }
 
     public void setAuthor(Object author) {

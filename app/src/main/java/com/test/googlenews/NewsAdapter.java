@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +16,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.test.googlenews.Model.ArticlesItem;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +27,8 @@ import java.util.Locale;
  */
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
+
+    private static final String DATE_PATTERN = "hh:mm  dd MMMM yyyy";
 
     private Context context;
     private List<ArticlesItem> itemList = new ArrayList<>();
@@ -48,6 +46,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     public void setData(List<ArticlesItem> list) {
         itemList.addAll(list);
+        if (itemList.isEmpty()) {
+            Toast.makeText(context, "No news", Toast.LENGTH_SHORT).show();
+        }
         notifyDataSetChanged();
     }
 
@@ -69,8 +70,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             description = "";
         }
         holder.textViewDescription.setText(description);
-        getDate(currentItem.getPublishedAt());
-        holder.textViewPublishedAt.setText(getDate(currentItem.getPublishedAt()));
+        holder.textViewPublishedAt.setText(getStringDate(currentItem.getPublishedAt()));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,16 +104,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
     }
 
-    private String getDate(String string) {
-        if (TextUtils.isEmpty(string)) {
-            return "";
-        }
-        String year = string.substring(0, 4);
-        String month = string.substring(5, 7);
-        String date = string.substring(8, 10);
-        String hour = string.substring(11, 13);
-        String minute = string.substring(14, 16);
-        //Log.e("MyDATA", year + "|" + month + "|" + date + "|" + hour + ":" + minute);
-        return hour + ":" + minute + "  " + date + "." + month + "." + year;
+//    private String getDate(String string) {
+//        if (TextUtils.isEmpty(string)) {
+//            return "";
+//        }
+//        String year = string.substring(0, 4);
+//        String month = string.substring(5, 7);
+//        String date = string.substring(8, 10);
+//        String hour = string.substring(11, 13);
+//        String minute = string.substring(14, 16);
+//        //Log.e("MyDATA", year + "|" + month + "|" + date + "|" + hour + ":" + minute);
+//        return hour + ":" + minute + "  " + date + "." + month + "." + year;
+//    }
+
+    private String getStringDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN, Locale.getDefault());
+        return dateFormat.format(date);
     }
 }
