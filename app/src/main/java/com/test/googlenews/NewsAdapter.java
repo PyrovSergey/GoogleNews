@@ -47,7 +47,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void setData(List<ArticlesItem> list) {
         itemList.addAll(list);
         if (itemList.isEmpty()) {
-            Toast.makeText(context, "No news", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.no_news, Toast.LENGTH_SHORT).show();
         }
         notifyDataSetChanged();
     }
@@ -103,19 +103,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             textViewPublishedAt = (TextView) view.findViewById(R.id.publishedAt);
         }
     }
-
-//    private String getDate(String string) {
-//        if (TextUtils.isEmpty(string)) {
-//            return "";
-//        }
-//        String year = string.substring(0, 4);
-//        String month = string.substring(5, 7);
-//        String date = string.substring(8, 10);
-//        String hour = string.substring(11, 13);
-//        String minute = string.substring(14, 16);
-//        //Log.e("MyDATA", year + "|" + month + "|" + date + "|" + hour + ":" + minute);
-//        return hour + ":" + minute + "  " + date + "." + month + "." + year;
-//    }
 
     private String getStringDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN, Locale.getDefault());

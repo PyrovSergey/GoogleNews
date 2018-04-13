@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -24,6 +23,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    public static final String KEY = "1d48cf2bd8034be59054969db665e62e";
+    public static final String PUBLISHED_AT = "publishedAt";
+    public static final String RU = "ru";
     private RecyclerView recyclerView;
     private List<ArticlesItem> itemList;
     private LinearLayoutManager linearLayoutManager;
@@ -36,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //Log.e("MyTAG", "onCreate()");
         searchView = (SearchView) findViewById(R.id.search_bar);
         searchView.setIconifiedByDefault(true);
 
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //searchView.setIconifiedByDefault(true);
                 getRequest(query);
                 return false;
             }
@@ -88,8 +88,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void getNews() {
-        //Log.e("MyTAG", "getNews()");
-        App.getGoogleApi().getData("ru", "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<News>() {
+        App.getGoogleApi().getData(RU, KEY).enqueue(new Callback<News>() {
 
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
@@ -97,13 +96,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     itemList.clear();
                     newsAdapter.setData(response.body().getArticles());
                 }
-                //Log.e("MyTAG", "onResponse()");
             }
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "An error occurred during networking", Toast.LENGTH_SHORT).show();
-                //Log.e("MyTAG", "onFailure()");
+                Toast.makeText(MainActivity.this, R.string.error_networking, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void getRequest(String string) {
         searchView.setIconifiedByDefault(false);
-        App.getGoogleApi().getRequest(string, "publishedAt", 100, "1d48cf2bd8034be59054969db665e62e").enqueue(new Callback<News>() {
+        App.getGoogleApi().getRequest(string, PUBLISHED_AT, 100, KEY).enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
                 if (response.body() != null) {
@@ -128,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "An error occurred during networking", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.error_networking, Toast.LENGTH_SHORT).show();
                 //Log.e("MyTAG", "onFailure()");
             }
         });

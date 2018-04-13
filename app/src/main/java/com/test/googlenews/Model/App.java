@@ -10,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class App extends Application {
+    public static final String BASE_URL = "https://newsapi.org";
     private static GoogleApi googleApi;
     private Retrofit retrofit;
 
@@ -18,7 +19,7 @@ public class App extends Application {
         super.onCreate();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://newsapi.org")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         googleApi = retrofit.create(GoogleApi.class);
